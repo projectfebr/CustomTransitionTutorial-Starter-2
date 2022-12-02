@@ -9,39 +9,29 @@
 import UIKit
 
 class FirstViewController: UIViewController {
+//    var selectedCell: CollectionViewCell?
+    var searchBarViewSnapshot: UIView?
+    var barCodeButtonViewSnapshot: UIView?
 
+    var animator: Animator?
 
-
-    @IBOutlet private var collectionView: UICollectionView!
-
-
+    
+    @IBOutlet weak var barCodeButton: UIButton!
+    @IBOutlet private(set) weak var searchBar: UISearchBar!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        collectionView.delegate = self
-        collectionView.dataSource = self
-
-        let layout = UICollectionViewFlowLayout()
-        layout.minimumLineSpacing = Constants.cellSpacing
-        layout.minimumInteritemSpacing = Constants.cellSpacing
-
-        collectionView.setCollectionViewLayout(layout, animated: false)
+        navigationController?.isNavigationBarHidden = true
+        setupSearchBar()
     }
 
-    func presentSecondViewController(with data: CellData) {
+    func presentSecondViewController() {
         let secondViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SecondViewController") as! SecondViewController
-
-        secondViewController.modalPresentationStyle = .fullScreen
-        secondViewController.data = data
-        present(secondViewController, animated: true)
+        navigationController?.delegate = self
+        navigationController?.pushViewController(secondViewController, animated: true)
     }
-}
 
-extension FirstViewController {
-
-    enum Constants {
-
-        static let cellSpacing: CGFloat = 8
+    private func setupSearchBar() {
+        searchBar.delegate = self
     }
 }

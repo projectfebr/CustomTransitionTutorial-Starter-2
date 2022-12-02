@@ -10,24 +10,29 @@ import UIKit
 
 class SecondViewController: UIViewController {
 
-    var data: CellData!
-
-    @IBOutlet private(set) var locationImageView: UIImageView!
-    @IBOutlet private(set) var locationLabel: UILabel!
-    @IBOutlet private(set) var closeButton: UIButton!
+    @IBOutlet private(set) weak var searchBar: SearchBar!
 
     override func viewDidLoad() {
+        navigationController?.isNavigationBarHidden = true
+        setupSearchBar()
         super.viewDidLoad()
-
-        let cross = #imageLiteral(resourceName: "cross").withRenderingMode(.alwaysTemplate)
-        closeButton.setImage(cross, for: .normal)
-        closeButton.tintColor = .white
-
-        locationImageView.image = data.image
-        locationLabel.text = data.title
     }
 
-    @IBAction func close(_ sender: Any) {
-        dismiss(animated: true)
+    private func setupSearchBar() {
+        searchBar.delegate = self
+        searchBar.showsCancelButton = true
+        searchBar.becomeFirstResponder()
+        searchBar.showsBookmarkButton = true
+        searchBar.setImage(UIImage(named: "sample"), for: .bookmark, state: .normal)
     }
+
+
+}
+
+extension SecondViewController: UISearchBarDelegate {
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        navigationController?.popViewController(animated: true)
+    }
+
+
 }
